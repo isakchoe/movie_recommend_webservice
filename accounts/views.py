@@ -14,7 +14,7 @@ User = get_user_model()
 def signup(request):  # User model CREATE
     # 인증된 사용자는 pass
     if request.user.is_authenticated:
-        return redirect('articles:index')
+        return redirect('community:index')
 
     # Create User Instance
     if request.method == 'POST':
@@ -23,7 +23,7 @@ def signup(request):  # User model CREATE
             user = form.save()
             # login => cookie & session settings
             auth_login(request, user)
-            return redirect('articles:index')
+            return redirect('community:index')
     else:
         form = CustomUserCreationForm()
         
@@ -40,7 +40,7 @@ def update(request):
         form = CustomUserChangeForm(request.POST, instance=user)
         if form.is_valid():
             user = form.save()
-            return redirect('accounts:profile', user.username)
+            return redirect('community:index')
     else:
         form = CustomUserChangeForm(instance=user)
     
@@ -74,13 +74,13 @@ def delete(request):
     user = request.user
     if user.is_authenticated:
         user.delete()
-    return redirect('articles:index')
+    return redirect('community:index')
 
 
 @require_http_methods(['GET', 'POST'])
 def login(request):
     if request.user.is_authenticated:
-        return redirect('articles:index')
+        return redirect('community:index')
 
     if request.method == 'POST':
         # AuthenticationForm => 일반 Form
@@ -88,7 +88,7 @@ def login(request):
         if form.is_valid():  # authenticate(id, pw) => 맞으면, user 객체를 반환
             user = form.get_user()
             auth_login(request, user)  # auth_login() => session & cookie 세팅
-            return redirect(request.GET.get('next') or 'articles:index')
+            return redirect(request.GET.get('next') or 'community:index')
     else:
         form = AuthenticationForm()
 
@@ -99,4 +99,5 @@ def login(request):
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)  # auth_logout => session, cookie 날리기
-    return redirect('articles:index')
+    return redirect('community:index')
+
