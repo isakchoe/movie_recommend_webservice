@@ -23,10 +23,72 @@ def recommend_random(request):
     random_movies = random.sample(movies, 10)
 
     context = {
-        'random_movies': random_movies,
+        'recommend_movies': random_movies,
     }
 
     return render(request, 'movies/recommend_movies.html', context)
+
+
+
+# 리뷰 기반 추천 
+# 리뷰, 스코어, 스코어 점수로 나누어야한다. 
+    #  1-10점,   7점 이상을 추천! 
+    #  4점? 이하는 절대 추천 안함.
+    # 사용자 -- user --> 리뷰를 역참조 
+    # 리뷰 --> movie 역참조,, 
+    # movie -- genre 테이블 역참조 확인,
+    # sql -- join (리팩토링 개선) 
+    # 장르에 맞게 필터링,, movies에서 장르 필터링, 
+    #  평점이 높은순,,, 장르가 일치하는거,,, limit 추천 
+
+def recommend_review(request):
+    movies = all_movies(26)
+
+    user = request.user
+    reviews = user.review_set.all()
+    
+    # 유저가 리뷰한 영화의 장르 
+    pick_genres = []
+
+    for review in reviews:
+        # 리뷰가 7점이상이면 해당 장르를 추천, 
+        if review.rate >= 7:
+            movie = review.movie     
+            genres = movie.genres.all()
+            
+        
+            for genre in genres:
+                pick_genres.append(genre.id)
+    
+    review_movies = []
+
+    for movie in movies:
+        for genre in movie['genre_ids']:
+
+            if genre in pick_genres:
+                count_score = 0 
+                if movie['vote_count'] < 500:
+                    count_score = 0 
+                elif movie['vote_count'] < 2000:
+                    count_score = 2 
+                elif movie['vote_count'] < 5000:
+                    count_score = 3
+                elif movie['vote_count'] < 10000:
+                    count_score = 4
+                else:
+                    count_score = 5
+                
+                result = movie['vote_average'] + count_score
+
+                if result >=10:
+                    review_movies.append(movie)
+
+
+    context ={
+        'recommend_movies': review_movies,
+    }
+    return render(request, 'movies/recommend_movies.html', context)
+
 
 
 def index(request):
