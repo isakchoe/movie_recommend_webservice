@@ -7,22 +7,51 @@
   <title>Document</title>
 </head>
 <body>
+  {% load bootstrap5 %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Home</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'community:index' %}">리뷰</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'movies:index' %}">추천</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
   <div class="container">
-    <nav>
-      {% if user.is_authenticated %}
-      <h3>Hello, {{ user.username }}</h3>
-      <form action="{% url 'accounts:logout' %}" method="POST">
-        {% csrf_token %}
-        <input type="submit" value="Logout">
-      </form>
-      {% comment %} <a href="{% url 'movies:index'%}">Movie</a> {% endcomment %}
-      {% comment %} <a href="{% url 'community:index'%}">Community</a> {% endcomment %}
-      {% comment %} <a href="{% url 'community:create'%}">New Review</a> {% endcomment %}
-      {% else %}
-      <a href="{% url 'accounts:signup' %}">Signup</a>
-      <a href="{% url 'accounts:login' %}">Login</a>
-      {% endif %}
-    </nav>
+    {% if user.is_authenticated %}
+    <h3>{{ user.username }}님 어서오세요.</h3>
+    <form action="{% url 'accounts:logout' %}" method="POST">
+      {% csrf_token %}
+      <button class="btn btn-secondary">로그아웃</button>
+    </form>
+    <form action="{% url 'accounts:delete' %}" method="POST">
+      {% csrf_token %}
+      <button class="btn btn-danger">회원탈퇴</button>
+    </form>
+    {% else %}
+    <form action="{% url 'accounts:login' %}" method="POST">
+      {% csrf_token %}
+      <button class="btn btn-primary">로그인</button>
+    </form>
+    <form action="{% url 'accounts:signup' %}" method="POST">
+      {% csrf_token %}
+      <button class="btn btn-info">회원가입</button>
+    </form>
+    {% endif %}
+    
     {% block content %}
     {% endblock %}
   </div>

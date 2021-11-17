@@ -31,35 +31,36 @@ def signup(request):  # User model CREATE
     return render(request, 'accounts/signup.html', context)
 
 
-@login_required
-@require_http_methods(['GET', 'POST'])
+# @login_required
+@require_POST
 def update(request):
     # 회원정보 수정은, 타인이 아닌 본인에 의해서만 가능
-    user = request.user
-    if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=user)
-        if form.is_valid():
-            user = form.save()
-            return redirect('community:index')
-    else:
-        form = CustomUserChangeForm(instance=user)
-    
-    context = {
-        'form': form
-    }
+    if request.user.is_authenticated:
+        user = request.user
+        if request.method == 'POST':
+            form = CustomUserChangeForm(request.POST, instance=user)
+            if form.is_valid():
+                user = form.save()
+                return redirect('community:index')
+        else:
+            form = CustomUserChangeForm(instance=user)
+        
+        context = {
+            'form': form
+        }
     return render(request, 'accounts/update.html', context)
 
 
 @login_required
 @require_http_methods(['GET', 'POST'])
 def change_password(request):
-    # PasswordChangeForm => 일반 Form
     user = request.user
     if request.method == 'POST':
         form = PasswordChangeForm(user, request.POST)
         if form.is_valid():
-            user = form.save() # 비밀번호 변경 => session_data missmatch => login 풀림
-            update_session_auth_hash(request, user)  # 새롭게 user에게 session_data & cookie 할당            return redirect('accounts:profile', user.username)
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('community:index')
     else:
         form = PasswordChangeForm(user)
     context = {

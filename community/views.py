@@ -14,6 +14,7 @@ def index(request):
     return render(request, 'community/index.html', context)
 
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def create_review(request):
     if request.method == 'POST':
