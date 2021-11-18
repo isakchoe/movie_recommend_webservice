@@ -18,7 +18,7 @@ def all_movies(n):
 
         for movie in res['results']:
             temp = Movie.objects.create(
-                        id = movie['id'],
+                        movie_api_id = movie['id'],
                         title = movie['title'],
                         release_date = movie['release_date'],
                         popularity = movie['popularity'],
@@ -27,6 +27,7 @@ def all_movies(n):
                         overview = movie['overview'],
                         poster_path = movie['poster_path'],
                     )
+
 
             for genre_id in movie['genre_ids']:
                 temp.genres.add(genre_id)
@@ -141,10 +142,9 @@ def home(request):
     return render(request, 'movies/home.html')
 
 # movie detail 
-def detail(request, movie_pk):
+def detail(request, movie_id):
 
-    movie = Movie.objects.get(pk=movie_pk)
-    print(movie_pk, movie.pk)
+    movie = Movie.objects.get(movie_api_id = movie_id)
     
     context = {
         'movie': movie,

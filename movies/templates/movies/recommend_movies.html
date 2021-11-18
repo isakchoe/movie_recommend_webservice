@@ -5,22 +5,21 @@
 <a href="{% url 'movies:recommend_review' %}"><button>리뷰 기반 추천 </button></a>
 <br>
 {% if recommend_movies %}
-
-  {% for movie in recommend_movies %}
-    <div class="card" style="width: 18rem;">
+  
+  <div class="d-flex flex-row justify-content-center">
+    {% for movie in recommend_movies %}
+    <div class="card m-3" style="width: 18rem;">
       <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title"> {{ movie.title }}</h5>
-        <p class="card-text">{{ movie.overview|truncatechars:30 }}</p>
-        <h2>{{ movie.id}}</h2>
-        <h1>{{ movie.pk }} dsds</h1>
+        <p class="card-text">{{ movie.overview|truncatechars:50 }}</p>
         <a href="{% url 'movies:detail' movie.id %}" class="btn btn-primary">더보기</a>
       </div>
     </div> 
-
-
     <hr>
   {% endfor %}
+  
+  </div>
 {% else %}
   <script type="text/javascript">alert("리뷰를 작성하세요!")</script>
 {% endif %}
