@@ -4,9 +4,15 @@
 <a href="{% url 'movies:recommend_random' %}"><button>랜덤 추천</button></a>
 <a href="{% url 'movies:recommend_review' %}"><button>리뷰 기반 추천 </button></a>
 <br>
-{% for movie in recommend_movies %}
-  {{ movie.title }}
-  <hr>
-{% endfor %}
+{% if recommend_movies %}
+
+  {% for movie in recommend_movies %}
+    {{ movie.title }}
+    <hr>
+  {% endfor %}
+{% else %}
+  <script type="text/javascript">alert("리뷰를 작성하세요!")</script>
+{% endif %}
+
 
 {% endblock content %}
