@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2 class="text-center">DETAIL</h2>
+  <hr>
+  <p>제목: {{ movie.title }}</p>
+  <p>내용: {{ movie.content }}</p>
+  <p>인기도: {{ movie.popularity }}</p>
+  <p>개봉 날짜: {{ movie.release_date }}</p>
+  
+  <a href="{% url 'community:index' %}">[back]</a>
+{% endblock  %}

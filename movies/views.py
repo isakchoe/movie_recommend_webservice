@@ -18,6 +18,7 @@ def all_movies(n):
 
         for movie in res['results']:
             temp = Movie.objects.create(
+                        id = movie['id'],
                         title = movie['title'],
                         release_date = movie['release_date'],
                         popularity = movie['popularity'],
@@ -131,7 +132,6 @@ def recommend_review(request):
     return render(request, 'movies/recommend_movies.html', context)
 
 
-
 def recommend(request):
     
     return render(request, 'movies/recommend.html')
@@ -139,3 +139,15 @@ def recommend(request):
 
 def home(request):
     return render(request, 'movies/home.html')
+
+# movie detail 
+def detail(request, movie_pk):
+
+    movie = Movie.objects.get(pk=movie_pk)
+    print(movie_pk, movie.pk)
+    
+    context = {
+        'movie': movie,
+    }
+
+    return render(request, 'movies/detail.html', context)
