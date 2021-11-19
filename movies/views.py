@@ -140,7 +140,18 @@ def recommend(request):
 
 
 def home(request):
-    return render(request, 'movies/home.html')
+    # 나중에는 디비에서 불러올 것!
+    movies = all_movies(2)
+    
+    random_movies = random.sample(movies, 3)
+
+    context = {
+        'first_movie': random_movies[0],
+        'sec_movie' : random_movies[1],
+        'third_movie': random_movies[2],
+    }
+
+    return render(request, 'movies/home.html', context)
 
 # movie detail 
 def detail(request, movie_id):
