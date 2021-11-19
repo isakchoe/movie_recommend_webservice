@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a href="{% url 'movies:recommend_random' %}"><button>랜덤 추천</button></a>
-<a href="{% url 'movies:recommend_review' %}"><button>리뷰 기반 추천 </button></a>
+<div class="container">
+  <div class="d-flex justify-content-center mt-5 border border-white rounded">
+    <a href="{% url 'movies:recommend_random' %}" class="text-decoration-none text-white text-center fs-2 bg-dark w-50">랜덤 추천</a>
+  </div>
+  <div class="d-flex justify-content-center mt-3  border border-white rounded">
+    <a href="{% url 'movies:recommend_review' %}" class="text-decoration-none text-white text-center fs-2 bg-dark w-100">리뷰 기반 추천</a>
+  </div>
+</div>
+  
 <br>
 {% if recommend_movies %}
   
   <div class="d-flex flex-row justify-content-center">
     {% for movie in recommend_movies %}
-    <div class="card m-3" style="width: 18rem;">
-      <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title"> {{ movie.title }}</h5>
-        <p class="card-text">{{ movie.overview|truncatechars:50 }}</p>
-        <a href="{% url 'movies:detail' movie.id %}" class="btn btn-primary">더보기</a>
-      </div>
+    <div class="card m-3 rounded" style="width: 24rem;">
+      <a href="{% url 'movies:detail' movie.id %}" class="text-decoration-none text-dark">
+        <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="poster-image">
+        <div class="card-body">
+          <h5 class="card-title fs-4 fw-bold text-center">{{ movie.title }}</h5>
+          <p class="fs-5 text-center">{{ movie.release_date }}</p>
+          <p class="card-text">{{ movie.overview|truncatechars:80 }}</p>
+        </div>
+      </a>
+      
     </div> 
     <hr>
   {% endfor %}
