@@ -3,6 +3,7 @@
 {% block content %}
   <h2 class="text-center">DETAIL</h2>
   <hr>
+  <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" alt="">
   <p>제목: {{ movie.title }}</p>
   <p>내용: {{ movie.content }}</p>
   <p>인기도: {{ movie.popularity }}</p>

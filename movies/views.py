@@ -15,6 +15,7 @@ def all_movies(n):
         URL = f'https://api.themoviedb.org/3/movie/top_rated?api_key={API_KEY}&language=ko-kr&page={page}'
         res = requests.get(URL).json()
 
+        print(res)
 
         for movie in res['results']:
             temp = Movie.objects.create(
