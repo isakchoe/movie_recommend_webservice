@@ -1,13 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2 class="text-center">DETAIL</h2>
+  <h2 class="text-center">{{movie.title}}</h2>
+  {% comment %} 커뮤니티 인덱스가 아닌, 이전 랜덤추천 페이지로 돌아가야함 {% endcomment %}
+  {% comment %} local storage 이용해야할듯?  {% endcomment %}
+  <form action="{% url 'community:index' %}">
+    <button>back</button>
+  </form>
   <hr>
-  <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" alt="">
-  <p>제목: {{ movie.title }}</p>
-  <p>내용: {{ movie.content }}</p>
-  <p>인기도: {{ movie.popularity }}</p>
-  <p>개봉 날짜: {{ movie.release_date }}</p>
   
-  <a href="{% url 'community:index' %}">[back]</a>
+  <div class="d-flex justify-content">
+    <div class="m-3">
+      <img class="d-block h-50" src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" alt="">
+    </div>
+
+    <div>
+      <p>제목: {{ movie.title }}</p>
+      <p>내용: {{ movie.content }}</p>
+      <p>인기도: {{ movie.popularity }}</p>
+      <p>개봉 날짜: {{ movie.release_date }}</p>
+      <p>줄거리 : {{movie.overview}}</p>
+    </div>
+  </div>
+
 {% endblock  %}
