@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
 
 {% block content %}
   <h2 class="text-center mt-5">{{ review.movie.title }}</h2>
@@ -11,24 +12,30 @@
       {{ review.content|linebreaksbr }}
     </p>
   </div>
-  <h4 class="mt-5">댓글</h4>
-  {% if comments|length %}
-    <p>{{ comments|length }}개의 댓글이 있습니다.</p>
-  {% endif %}
-  {% for comment in comments %}
-    <div>
-      {{ comment.user }} - {{ comment.content }}
-    </div>
-  {% endfor %}
-  <hr>
-  {% if request.user.is_authenticated %}
-    <form action="{% url 'community:create_comment' review.pk %}" method="POST">
-      {% csrf_token %}
-      {{ comment_form }}
-      <input type="submit">
-    </form>
-  {% else %}
-    <a href="{% url 'accounts:login' %}"><button class="btn btn-outline-info">로그인</button></a>
-  {% endif %}
-  <a href="{% url 'community:index' %}"><button class="btn btn-outline-secondary">뒤로가기</button></a>
+  <div class="mx-5">
+    <h4 class="mt-5">댓글</h4>
+    {% if comments|length %}
+      <p>{{ comments|length }}개의 댓글이 있습니다.</p>
+    {% endif %}
+    {% for comment in comments %}
+      <div class="my-3">
+        작성자 : {{ comment.user }}
+        <br>
+        {{ comment.created_at }}
+        <br>
+        > {{ comment.content }}
+      </div>
+    {% endfor %}
+    <hr>
+    {% if request.user.is_authenticated %}
+      <form action="{% url 'community:create_comment' review.pk %}" method="POST" class="d-inline">
+        {% csrf_token %}
+        {% bootstrap_form comment_form %}
+        <button class="btn btn-primary">작성</button>
+      </form>
+    {% else %}
+      <a href="{% url 'accounts:login' %}"><button class="btn btn-success">로그인</button></a>
+    {% endif %}
+    <a href="{% url 'community:index' %}"><button class="btn btn-light">뒤로가기</button></a>
+  </div>
 {% endblock  %}

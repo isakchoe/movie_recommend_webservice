@@ -90,28 +90,43 @@
 
     <div class="container d-flex justify-content-end">
       {% if user.is_authenticated %}
-      <h3>{{ user.username }}님 어서오세요.</h3>
-      <form class="mx-2" action="{% url 'accounts:logout' %}" method="POST">
-        {% csrf_token %}
-        <button class="btn btn-outline-light">로그아웃</button>
-      </form>
-      <form class="mx-2" action="{% url 'accounts:delete' %}" method="POST">
-        {% csrf_token %}
-        <button class="btn btn-outline-light">회원탈퇴</button>
-      </form>
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ user.username }} 님
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <form class="mx-2" action="{% url 'accounts:logout' %}" method="POST">
+              {% csrf_token %}
+              <button class="btn">로그아웃</button>
+            </form>
+            <form class="mx-2" action="{% url 'accounts:update' %}" method="POST">
+              {% csrf_token %}
+              <button class="btn">정보 수정</button>
+            </form>
+            <form class="mx-2" action="{% url 'accounts:change_password' %}" method="POST">
+              {% csrf_token %}
+              <button class="btn">비밀번호 변경</button>
+            </form>
+            <li><hr class="dropdown-divider"></li>
+            <form class="mx-2" action="{% url 'accounts:delete' %}" method="POST">
+              {% csrf_token %}
+              <button class="btn" onclick="return confirm('정말로 탈퇴하시겠습니까?')">회원탈퇴</button>
+            </form>
+          </ul>
+        </div>
       {% else %}
       <form class="mx-2" action="{% url 'accounts:login' %}" method="POST">
         {% csrf_token %}
-        <button class="btn btn-outline-light">로그인</button>
+        <button class="btn btn-outline-primary">로그인</button>
       </form>
       <form class="mx-2" action="{% url 'accounts:signup' %}" method="POST">
         {% csrf_token %}
-        <button class="btn btn-outline-light">회원가입</button>
+        <button class="btn btn-outline-primary">회원가입</button>
       </form>
       {% endif %}
       <form class="d-flex mx-2">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-light" type="submit">Search</button>
+          <button class="btn btn-outline-info" type="submit">Search</button>
       </form>
     </div>
   </nav>

@@ -2,12 +2,11 @@
 {% load bootstrap5 %}
 
 {% block content %}
-  <h1 class="text-center">CREATE</h1>
-  <form action="" method="POST">
+  <h1 class="text-center mt-5">리뷰 작성</h1>
+  <form action="" method="POST" class="d-inline">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <input type="submit">
+    <button class="btn btn-primary">작성</button>
   </form>
-  <hr>
-  <a href="{% url 'community:index' %}">[back]</a>
+  <a href="{% url 'community:index' %}"><button class="btn btn-light">뒤로가기</button></a>
 {% endblock %}
