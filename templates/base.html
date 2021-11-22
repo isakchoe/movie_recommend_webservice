@@ -99,11 +99,11 @@
               {% csrf_token %}
               <button class="btn">로그아웃</button>
             </form>
-            <form class="mx-2" action="{% url 'accounts:update' %}" method="POST">
+            <form class="mx-2" action="{% url 'accounts:update' %}" method="GET">
               {% csrf_token %}
               <button class="btn">정보 수정</button>
             </form>
-            <form class="mx-2" action="{% url 'accounts:change_password' %}" method="POST">
+            <form class="mx-2" action="{% url 'accounts:change_password' %}" method="GET">
               {% csrf_token %}
               <button class="btn">비밀번호 변경</button>
             </form>

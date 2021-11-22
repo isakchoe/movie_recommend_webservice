@@ -31,8 +31,7 @@ def signup(request):  # User model CREATE
     return render(request, 'accounts/signup.html', context)
 
 
-# @login_required
-@require_POST
+@require_http_methods(['GET', 'POST'])
 def update(request):
     # 회원정보 수정은, 타인이 아닌 본인에 의해서만 가능
     if request.user.is_authenticated:
