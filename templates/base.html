@@ -37,11 +37,42 @@
     } {% endcomment %}
     .thema-dark {
       background-color: #222;
+      color: white;
     }
     
     .nav-height {
       height: 75px;
     }
+
+    .pagination > li > a
+{
+    background-color: white;
+    color: #5A4181;
+}
+
+{% comment %} bootstrap paginator {% endcomment %}
+  .pagination > li > a:focus,
+  .pagination > li > a:hover,
+  .pagination > li > span:focus,
+  .pagination > li > span:hover
+  {
+      color: #ddd;
+      background-color: #eee;
+      border-color: #ddd;
+  }
+
+  .pagination > .active > a
+  {
+      color: white;
+      background-color: #444 !Important;
+      border: solid 1px #444 !Important;
+  }
+
+  .pagination > .active > a:hover
+  {
+      background-color: #666 !Important;
+      border: solid 1px #666;
+  }
   </style>
 
 
@@ -95,8 +126,10 @@
   </nav>
 
 
-  {% block content %}
-  {% endblock content %}
+  <div class="container">
+    {% block content %}
+    {% endblock content %}
+  </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

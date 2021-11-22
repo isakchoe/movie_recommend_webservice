@@ -95,13 +95,13 @@ def recommend_review(request):
                 if movie['vote_count'] < 500:
                     count_score = 0 
                 elif movie['vote_count'] < 2000:
-                    count_score = 2 
+                    count_score = 1
                 elif movie['vote_count'] < 5000:
-                    count_score = 3
+                    count_score = 1.5
                 elif movie['vote_count'] < 10000:
-                    count_score = 4
+                    count_score = 2
                 else:
-                    count_score = 5
+                    count_score = 2.5
                 
                 result = movie['vote_average'] + count_score
 
