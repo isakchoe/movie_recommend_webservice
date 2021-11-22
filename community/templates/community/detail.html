@@ -1,26 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2 class="text-center">DETAIL</h2>
-  <h3>{{ review.pk }} 번째 글</h3>
-  <hr>
-  <p>제목: {{ review.title }}</p>
-  <p>영화 제목: {{ review.movie_title }}</p>
-  <p>내용: {{ review.content }}</p>
-  <p>평점: {{ review.rank }}</p>
-  <p>작성 시각: {{ review.created_at }}</p>
-  <p>수정 시각: {{ review.updated_at }}</p>
-  <hr>
-  <h4>댓글 목록</h4>
+  <h2 class="text-center mt-5">{{ review.movie.title }}</h2>
+  <hr class="mb-5">
+  <div class="mx-5">
+    <h3 class="mb-4">{{ review.title }}</h3>
+    <p class="fs-5">리뷰 평점 : {{ review.rate }}</p>
+    <p class="fs-6 mb-4">{{ review.created_at }}</p>
+    <p class="border border-secondary p-4" style="height: 400px;">
+      {{ review.content|linebreaksbr }}
+    </p>
+  </div>
+  <h4 class="mt-5">댓글</h4>
   {% if comments|length %}
-    <p><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
+    <p>{{ comments|length }}개의 댓글이 있습니다.</p>
   {% endif %}
   {% for comment in comments %}
     <div>
       {{ comment.user }} - {{ comment.content }}
     </div>
-  {% empty %}
-    <p><b>댓글이 없어요..</b></p>
   {% endfor %}
   <hr>
   {% if request.user.is_authenticated %}
@@ -30,7 +28,7 @@
       <input type="submit">
     </form>
   {% else %}
-    <a href="{% url 'accounts:login' %}">[댓글을 작성하려면 로그인하세요.]</a>
+    <a href="{% url 'accounts:login' %}"><button class="btn btn-outline-info">로그인</button></a>
   {% endif %}
-  <a href="{% url 'community:index' %}">[back]</a>
+  <a href="{% url 'community:index' %}"><button class="btn btn-outline-secondary">뒤로가기</button></a>
 {% endblock  %}
