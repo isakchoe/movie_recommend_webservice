@@ -2,16 +2,12 @@
 
 {% block content %}
   <h2 class="text-center">{{movie.title}}</h2>
-  {% comment %} 커뮤니티 인덱스가 아닌, 이전 랜덤추천 페이지로 돌아가야함 {% endcomment %}
-  {% comment %} local storage 이용해야할듯?  {% endcomment %}
-  <form action="{% url 'community:index' %}">
-    <button>back</button>
-  </form>
+  <button onClick="javascript:history.go(-1);">back</button>
   <hr>
   
   <div class="d-flex justify-content">
-    <div class="m-3">
-      <img class="d-block h-50" src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" alt="">
+    <div class="image">
+      <img class="d-block w-100" src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" alt="">
     </div>
 
     <div>
