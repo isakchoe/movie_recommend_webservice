@@ -3,13 +3,17 @@ from django.views.decorators.http import require_GET, require_POST, require_http
 from django.contrib.auth.decorators import login_required
 from .models import Review, Comment
 from .forms import ReviewForm, CommentForm
+from django.core.paginator import Paginator
 
 
 @require_GET
 def index(request):
     reviews = Review.objects.order_by('-pk')
+    paginator = Paginator(reviews, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'reviews': reviews,
+        'page_obj': page_obj,
     }
     return render(request, 'community/index.html', context)
 
@@ -23,7 +27,7 @@ def create_review(request):
             review = form.save(commit=False)
             review.user = request.user
             review.save()
-            return redirect('community:detail', review.pk)
+            return redirect('community:detail_review', review.pk)
     else:
         form = ReviewForm()
     context = {
@@ -55,7 +59,7 @@ def update_review(request, review_pk):
             review = form.save(commit=False)
             review.user = request.user
             review.save()
-            return redirect('community:detail', review.pk)
+            return redirect('community:detail_review', review.pk)
     else:
         form = ReviewForm(instance=review)
     context = {
@@ -72,7 +76,7 @@ def delete_review(request, review_pk):
         if request.user == review.user:
             review.delete()
             return redirect('community:index')
-        return redirect('community:detail')
+        return redirect('community:detail_review')
 
 
 @require_POST
@@ -84,7 +88,7 @@ def create_comment(request, review_pk):
         comment.review = review
         comment.user = request.user
         comment.save()
-        return redirect('community:detail', review.pk)
+        return redirect('community:detail_review', review.pk)
     context = {
         'comment_form': comment_form,
         'review': review,
@@ -99,7 +103,7 @@ def delete_comment(request, review_pk, comment_pk):
         comment = get_object_or_404(Comment, pk=comment_pk)
         if request.user == comment.user:
             comment.delete()
-    return redirect('articles:detail', review_pk)
+    return redirect('community:detail_review', review_pk)
 
 
 @require_POST
@@ -108,4 +112,4 @@ def comments_delete(request, article_pk, comment_pk):
         comment = get_object_or_404(Comment, pk=comment_pk)
         if request.user == comment.user:
             comment.delete()
-    return redirect('articles:detail', article_pk)
+    return redirect('community:detail_review', article_pk)

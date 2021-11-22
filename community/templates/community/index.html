@@ -2,15 +2,86 @@
 {% load bootstrap5 %}
 
 {% block content %}
-  <h1>Community</h1>
-  <hr>
-  {% for review in reviews %}
-    <p>작성자 : {{ review.user }}</p>
-    <p>글 번호: {{ review.pk }}</p>
-    <p>글 제목: {{ review.title }}</p>
-    <p>글 내용: {{ review.content }}</p>
-    <a href="{% url 'community:detail' review.pk %}">[detail]</a>
-    <hr>
+<table class="table text-white mt-5">
+  <thead>
+    <tr class="text-center">
+      <th scope="col" width="10%">번호</th>
+      <th scope="col" width="40%">제목</th>
+      <th scope="col" width="20%">작성자</th>
+      <th scope="col" width="30%">작성일</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for review in page_obj %}
+    <tr>
+      <th scope="row" class="text-center">{{ review.pk }}</th>
+      <td>
+        <a href="{% url 'community:detail_review' review.pk %}" class="text-decoration-none text-white mx-5">{{ review.title }} <span class="text-secondary">[{{ review.comment_set.all|length }}]</span></a>
+      </td>
+      <td class="text-center">{{ review.user.username }}</td>
+      <td class="text-center">{{ review.created_at }}</td>
+    </tr>
   {% endfor %}
-  <a href="{% url 'community:create' %}"><button>글쓰기</button></a>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-end">
+  <a href="{% url 'community:create_review' %}"><button class="btn btn-secondary mx-4">글쓰기</button></a>
+</div>
+
+<div class="d-flex justify-content-center mt-5">
+  {% bootstrap_pagination page_obj %}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} <div class="container">
+  <h1 class="justify-content-end">
+    <a>Reviews</a>
+    <a href="{% url 'community:create' %}"><button class="btn btn-warning">글쓰기</button></a>
+  </h1>
+  
+
+
+  <table class="table text-white">
+    <thead>
+      <tr>
+        <th scope="col">글 번호</th>
+        <th scope="col">제목</th>
+        <th scope="col">작성자</th>
+        <th scope="col">작성 날짜</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for review in reviews %}
+          <tr>
+            <a href="{% url 'community:detail' review.pk %}">
+              <th scope="row">{{ review.pk }}</th>
+              <th>{{ review.title }}</th>
+              <th>{{ review.user }}</th>
+              <th>{{ review.created_at }}</th>
+            </a>
+            <hr>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div> {% endcomment %}
+
 {% endblock %}
