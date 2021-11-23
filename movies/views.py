@@ -4,7 +4,7 @@ import random
 from .models import Movie, Genre
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-
+from django.shortcuts import get_object_or_404
 
 def all_movies(n):
     movies = []
@@ -16,6 +16,7 @@ def all_movies(n):
         res = requests.get(URL).json()
 
         for movie in res['results']:
+            # 디비에 저장 
             temp = Movie.objects.create(
                         movie_api_id = movie['id'],
                         title = movie['title'],
@@ -30,9 +31,9 @@ def all_movies(n):
 
             for genre_id in movie['genre_ids']:
                 temp.genres.add(genre_id)
-        
             movies.append(movie)
 
+    # 디비가 아니라 tmdb api(movie_api_id가 없다 )
     return movies
 
 
@@ -43,13 +44,13 @@ def all_movies(n):
 def recommend_random(request):
     # 40개 중에서 랜덤으로 3개 추천
     movies = all_movies(3)
-
     random_movies = random.sample(movies, 3)
 
     context = {
         'recommend_movies': random_movies,
     }
 
+    # tmdb를 쏴주고 잇엇다
     return render(request,'movies/recommend_movies.html', context)
 
 
@@ -154,8 +155,8 @@ def home(request):
 
 # movie detail 
 def detail(request, movie_id):
-
-    movie = Movie.objects.get(movie_api_id = movie_id)
+    print(movie_id)
+    movie = get_object_or_404(Movie, movie_api_id = movie_id)
     
     context = {
         'movie': movie,
@@ -179,6 +180,7 @@ def search_movies(request):
 
 
 def movie_reviews(request, movie_api_id):
+    # 디비에서 서칭 
     movie = Movie.objects.get(movie_api_id = movie_api_id)
     
     # 영화에서 리뷰 역참조 
