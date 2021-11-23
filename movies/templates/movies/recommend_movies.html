@@ -17,6 +17,7 @@
     {% for movie in recommend_movies %}
     <div class="card m-3 rounded" style="width: 22rem;">
       <a href="{% url 'movies:detail' movie.id %}" class="text-decoration-none text-dark">
+        <h1>{{ movie.m}}</h1>
         <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="poster-image">
         <div class="card-body">
           <h5 class="card-title fs-4 fw-bold text-center">{{ movie.title }} <span class="fs-5">[ {{ movie.vote_average }} ]</span></h5>
@@ -31,11 +32,13 @@
   
   </div>
 {% else %}
-  <script type="text/javascript">alert("리뷰를 작성하세요!")</script>
+  {% if msg == "검색결과" %}
+    <script type="text/javascript">alert("검색결과가 없습니다!")</script>
+  {% elif msg == "추천결과" %}
+    <script type="text/javascript">alert("리뷰를 작성하세요!")</script>
+  {% endif %}
+
 {% endif %}
-
-
-
 
 {% endblock content %}
 

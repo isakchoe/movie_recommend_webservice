@@ -3,7 +3,7 @@ import requests
 import random
 from .models import Movie, Genre
 from django.contrib.auth.decorators import login_required
-
+from django.core.paginator import Paginator
 
 
 def all_movies(n):
@@ -49,7 +49,7 @@ def recommend_random(request):
         'recommend_movies': random_movies,
     }
 
-    return render(request, 'movies/recommend_movies.html', context)
+    return render(request,'movies/recommend_movies.html', context)
 
 
 
@@ -108,9 +108,6 @@ def recommend_review(request):
                 if result >=10:
                     review_movies.append([movie,result])
 
-
-    
-        
     
     # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
     review_movies.sort(key=lambda x: -x[1])
@@ -126,8 +123,8 @@ def recommend_review(request):
 
     context ={
         'recommend_movies': new_review_movies,
+        'msg':'추천결과',
     }
-
 
     return render(request, 'movies/recommend_movies.html', context)
 
@@ -172,8 +169,21 @@ def search_movies(request):
 
     context ={
         'recommend_movies': movies,
+        'msg':'검색결과',
     }
-
     return render(request,'movies/recommend_movies.html',context)
 
+
+def movie_reviews(request, movie_api_id):
+    movie = Movie.objects.get(movie_api_id = movie_api_id)
     
+    # 영화에서 리뷰 역참조 
+    reviews_of_movie = movie.review_set.all()
+    
+    paginator = Paginator(reviews_of_movie, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'page_obj': page_obj,
+    }
+    return render(request, 'community/index.html', context)
