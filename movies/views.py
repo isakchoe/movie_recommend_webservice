@@ -78,7 +78,6 @@ def recommend_random(request):
 
 @login_required
 def recommend_review(request):
-    movies = all_movies(6)
 
     user = request.user
     reviews = user.review_set.all()
@@ -93,48 +92,46 @@ def recommend_review(request):
             movie = review.movie     
             genres = movie.genres.all()
             
-        
             for genre in genres:
                 pick_genres.append(genre.id)
     
     review_movies = []
+    movies = Movie.objects.all()
 
     for movie in movies:
-        for genre in movie['genre_ids']:
+        genres = movie.genres.all()
 
-            if genre in pick_genres:
+        for genre in genres:
+            if genre.id in pick_genres:
                 count_score = 0 
-                if movie['vote_count'] < 500:
+                if movie.vote_count < 500:
                     count_score = 0 
-                elif movie['vote_count'] < 2000:
+                elif movie.vote_count < 2000:
                     count_score = 1
-                elif movie['vote_count'] < 5000:
+                elif movie.vote_count < 5000:
                     count_score = 1.5
-                elif movie['vote_count'] < 10000:
+                elif movie.vote_count < 10000:
                     count_score = 2
                 else:
                     count_score = 2.5
                 
-                result = movie['vote_average'] + count_score
+                result = movie.vote_average + count_score
 
                 if result >=10:
                     review_movies.append([movie,result])
 
+    new_review_movies = []
 
+    # 빈배열 아니면, 정렬
     if review_movies:
-        # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
         review_movies.sort(key=lambda x: -x[1])
+        # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
+        if len(review_movies) > 3:
+            review_movies = review_movies[:3]
+            for review_movie in review_movies:
+                review_movie.pop()
+                new_review_movies.append(review_movie[0])
     
-    # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
-    review_movies.sort(key=lambda x: -x[1])
-
-    if len(review_movies) > 3:
-        review_movies = review_movies[:3]
-
-        new_review_movies = []
-        for review_movie in review_movies:
-            review_movie.pop()
-            new_review_movies.append(review_movie[0])
 
     context ={
         'recommend_movies': new_review_movies,
@@ -150,11 +147,7 @@ def recommend(request):
 
 
 def home(request):
-    # 나중에는 디비에서 불러올 것!
-    movies = all_movies(2)
-    
-    random_movies = random.sample(movies, 3)
-
+    random_movies = Movie.objects.order_by('?')[:3]
     context = {
         'first_movie': random_movies[0],
         'sec_movie' : random_movies[1],
