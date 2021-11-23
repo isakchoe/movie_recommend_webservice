@@ -11,6 +11,18 @@
     <p class="border border-secondary p-4" style="height: 400px;">
       {{ review.content|linebreaksbr }}
     </p>
+    <div>
+      {% if request.user == review.user %}
+        <form action="{% url 'community:update_review' review.pk %}" method="GET" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-warning">수정</button>
+        </form>
+        <form action="{% url 'community:delete_review' review.pk %}" method="POST" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-danger", onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
+        </form>
+      {% endif %}
+    </div>
   </div>
   <div class="mx-5">
     <h4 class="mt-5">댓글</h4>

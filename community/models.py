@@ -1,7 +1,8 @@
 from django.db import models
 from django.conf import settings
 
-from movies.models import Movie  
+from movies.models import Movie
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # Create your models here.
@@ -10,7 +11,7 @@ class Review(models.Model):
     title = models.CharField(max_length=10)
     content = models.TextField()
     comments = models.TextField()
-    rate = models.PositiveIntegerField()
+    rate = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

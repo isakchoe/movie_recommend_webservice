@@ -31,6 +31,15 @@
       height: 75px;
     }
 
+    .table-height {
+      height: 60px;
+    }
+
+    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #333;
+    color: #fff;
+  }
+
     .pagination > li > a
 {
     background-color: white;
@@ -124,15 +133,9 @@
         <button class="btn btn-outline-primary">회원가입</button>
       </form>
       {% endif %}
-<<<<<<< HEAD
-      <form class="d-flex mx-2">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-info" type="submit">Search</button>
-=======
       <form class="d-flex mx-2" action="{% url 'movies:search_movies' %}">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="data">
           <button class="btn btn-outline-light" type="submit">Search</button>
->>>>>>> busung
       </form>
     </div>
   </nav>

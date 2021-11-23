@@ -2,7 +2,7 @@
 {% load bootstrap5 %}
 
 {% block content %}
-<table class="table text-white mt-5">
+<table class="table table-hover text-white mt-5">
   <thead>
     <tr class="text-center">
       <th scope="col" width="10%">번호</th>
@@ -13,7 +13,7 @@
   </thead>
   <tbody>
   {% for review in page_obj %}
-    <tr>
+    <tr class="table-height align-middle">
       <th scope="row" class="text-center">{{ review.pk }}</th>
       <td>
         <a href="{% url 'community:detail_review' review.pk %}" class="text-decoration-none text-white mx-5">{{ review.title }} <span class="text-secondary">[{{ review.comment_set.all|length }}]</span></a>
@@ -26,7 +26,7 @@
 </table>
 
 <div class="d-flex justify-content-end">
-  <a href="{% url 'community:create_review' %}"><button class="btn btn-success mx-4">글쓰기</button></a>
+  <a href="{% url 'community:create_review' %}"><button class="btn btn-success m-4">글쓰기</button></a>
 </div>
 
 <div class="d-flex justify-content-center mt-5">

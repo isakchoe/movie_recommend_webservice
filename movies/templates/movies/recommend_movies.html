@@ -23,12 +23,13 @@
           <p class="fs-5 text-center">{{ movie.release_date }}</p>
           <p class="card-text">{{ movie.overview|truncatechars:80 }}</p>
         </div>
-      </a>
-      
-    </div> 
+      </a>      
+    </div>
     <hr>
   {% endfor %}
-  
+  {% if is_review == False %}
+    <script type="text/javascript">alert("리뷰를 작성하면 맞춤 영화가 추천됩니다!")</script>
+  {% endif %}
   </div>
 {% else %}
   <script type="text/javascript">alert("리뷰를 작성하세요!")</script>

@@ -41,7 +41,8 @@ def all_movies(n):
 
 
 def recommend_random(request):
-    movies = all_movies(6)
+    # 40개 중에서 랜덤으로 3개 추천
+    movies = all_movies(3)
 
     random_movies = random.sample(movies, 3)
 
@@ -109,25 +110,28 @@ def recommend_review(request):
                     review_movies.append([movie,result])
 
 
-    
-        
-    
-    # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
-    review_movies.sort(key=lambda x: -x[1])
+    # 사용자 리뷰 평점 7점 이상의 영화가 없다면
+    # 평점 높은 영화 40개 중에서 3개를 랜덤으로 선택해서 추천
+    if review_movies:
+        # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
+        review_movies.sort(key=lambda x: -x[1])
 
-    if len(review_movies) > 3:
-        review_movies = review_movies[:3]
+        if len(review_movies) > 3:
+            review_movies = review_movies[:3]
 
-    new_review_movies = []
-    for review_movie in review_movies:
-        review_movie.pop()
-        new_review_movies.append(review_movie[0])
-        
+        new_review_movies = []
+        for review_movie in review_movies:
+            review_movie.pop()
+            new_review_movies.append(review_movie[0])
+        is_review = True
+    else:
+        new_review_movies = random.sample(movies[:40], 3)
+        is_review = False
 
     context ={
         'recommend_movies': new_review_movies,
+        'is_review': is_review,
     }
-
 
     return render(request, 'movies/recommend_movies.html', context)
 
@@ -175,5 +179,3 @@ def search_movies(request):
     }
 
     return render(request,'movies/recommend_movies.html',context)
-
-    
