@@ -15,6 +15,7 @@
         <p>인기도: {{ movie.popularity }}</p>
         <p>개봉 날짜: {{ movie.release_date }}</p>
         <p>줄거리 : {{movie.overview}}</p>
+        <a href="{% url 'movies:movie_reviews' movie.movie_api_id   %}"> 리뷰 보러 가기 </a>
       </div>
     </div>
   </div>

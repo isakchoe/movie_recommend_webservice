@@ -3,7 +3,7 @@ import requests
 import random
 from .models import Movie, Genre
 from django.contrib.auth.decorators import login_required
-
+from django.core.paginator import Paginator
 
 
 def all_movies(n):
@@ -50,7 +50,7 @@ def recommend_random(request):
         'recommend_movies': random_movies,
     }
 
-    return render(request, 'movies/recommend_movies.html', context)
+    return render(request,'movies/recommend_movies.html', context)
 
 
 
@@ -110,27 +110,24 @@ def recommend_review(request):
                     review_movies.append([movie,result])
 
 
-    # 사용자 리뷰 평점 7점 이상의 영화가 없다면
-    # 평점 높은 영화 40개 중에서 3개를 랜덤으로 선택해서 추천
     if review_movies:
         # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
         review_movies.sort(key=lambda x: -x[1])
+    
+    # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
+    review_movies.sort(key=lambda x: -x[1])
 
-        if len(review_movies) > 3:
-            review_movies = review_movies[:3]
+    if len(review_movies) > 3:
+        review_movies = review_movies[:3]
 
         new_review_movies = []
         for review_movie in review_movies:
             review_movie.pop()
             new_review_movies.append(review_movie[0])
-        is_review = True
-    else:
-        new_review_movies = random.sample(movies[:40], 3)
-        is_review = False
 
     context ={
         'recommend_movies': new_review_movies,
-        'is_review': is_review,
+        'msg':'추천결과',
     }
 
     return render(request, 'movies/recommend_movies.html', context)
@@ -176,6 +173,21 @@ def search_movies(request):
 
     context ={
         'recommend_movies': movies,
+        'msg':'검색결과',
     }
-
     return render(request,'movies/recommend_movies.html',context)
+
+
+def movie_reviews(request, movie_api_id):
+    movie = Movie.objects.get(movie_api_id = movie_api_id)
+    
+    # 영화에서 리뷰 역참조 
+    reviews_of_movie = movie.review_set.all()
+    
+    paginator = Paginator(reviews_of_movie, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'page_obj': page_obj,
+    }
+    return render(request, 'community/index.html', context)
