@@ -15,8 +15,7 @@
   <div class="d-flex flex-row justify-content-center">
     {% for movie in recommend_movies %}
     <div class="card m-3 rounded" style="width: 22rem;">
-      <a href="{% url 'movies:detail' movie.id %}" class="text-decoration-none text-dark">
-        <h1>{{ movie.m}}</h1>
+      <a href="{% url 'movies:detail' movie.movie_api_id %}" class="text-decoration-none text-dark">
         <img src="https://image.tmdb.org/t/p/original{{ movie.poster_path }}" class="card-img-top" alt="poster-image">
         <div class="card-body">
           <h5 class="card-title fs-4 fw-bold text-center">{{ movie.title }} <span class="fs-5">[ {{ movie.vote_average }} ]</span></h5>

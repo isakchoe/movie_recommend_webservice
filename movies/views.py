@@ -4,6 +4,7 @@ import random
 from .models import Movie, Genre
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 
 
 def all_movies(n):
@@ -31,7 +32,7 @@ def all_movies(n):
             for genre_id in movie['genre_ids']:
                 temp.genres.add(genre_id)
         
-            movies.append(movie)
+            movies.append(temp)
 
     return movies
 
@@ -154,8 +155,7 @@ def home(request):
 
 # movie detail 
 def detail(request, movie_id):
-
-    movie = Movie.objects.get(movie_api_id = movie_id)
+    movie = get_object_or_404(Movie, movie_api_id=movie_id)
     
     context = {
         'movie': movie,
@@ -178,10 +178,10 @@ def search_movies(request):
     return render(request,'movies/recommend_movies.html',context)
 
 
-def movie_reviews(request, movie_api_id):
-    movie = Movie.objects.get(movie_api_id = movie_api_id)
+def movie_reviews(request, movie_id):
+    movie = get_object_or_404(Movie, movie_api_id=movie_id)
     
-    # 영화에서 리뷰 역참조 
+    # 영화에서 리뷰 역참조
     reviews_of_movie = movie.review_set.all()
     
     paginator = Paginator(reviews_of_movie, 10)
