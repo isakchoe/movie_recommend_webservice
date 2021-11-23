@@ -161,3 +161,19 @@ def detail(request, movie_id):
     }
 
     return render(request, 'movies/detail.html', context)
+
+
+# ㅇㅕㅇ호ㅏ  검검색  
+def search_movies(request):
+    search = request.GET.get('data')
+    
+    # django orm 
+    movies = Movie.objects.filter(title__contains=search)[:3]
+
+    context ={
+        'recommend_movies': movies,
+    }
+
+    return render(request,'movies/recommend_movies.html',context)
+
+    
