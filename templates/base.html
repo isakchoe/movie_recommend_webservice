@@ -21,6 +21,15 @@
   <meta name="theme-color" content="#7952b3">
 
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+  </style>
+
   <style>
     .thema-dark {
       background-color: #222;
@@ -97,7 +106,7 @@
       </div>
     </div>
 
-    <div class="container d-flex justify-content-end">
+    <div class="container d-none d-lg-flex justify-content-end">
       {% if user.is_authenticated %}
         <div class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
