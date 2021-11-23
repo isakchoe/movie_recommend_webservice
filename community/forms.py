@@ -5,7 +5,7 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = Review
-        fields = ['title', 'rate', 'content', 'movie',]
+        fields = ['title', 'rate', 'content',]
 
         # movie. 
         # 다른 템플릿 

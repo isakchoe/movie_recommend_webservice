@@ -2,19 +2,22 @@
 {% load bootstrap5 %}
 
 {% block content %}
-<table class="table table-hover text-white mt-5">
+<button class="btn btn-light mt-5 mb-3" onClick="javascript:history.go(-1);">뒤로가기</button>
+<table class="table table-hover text-white">
   <thead>
     <tr class="text-center">
-      <th scope="col" width="10%">번호</th>
-      <th scope="col" width="40%">제목</th>
-      <th scope="col" width="20%">작성자</th>
-      <th scope="col" width="30%">작성일</th>
+      <th scope="col" width="5%">번호</th>
+      <th scope="col" width="25%">영화</th>
+      <th scope="col" width="30%">제목</th>
+      <th scope="col" width="15%">글쓴이</th>
+      <th scope="col" width="25%">작성일</th>
     </tr>
   </thead>
   <tbody>
   {% for review in page_obj %}
-    <tr class="table-height align-middle">
+    <tr class="table-height align-middle text-center">
       <th scope="row" class="text-center">{{ review.pk }}</th>
+      <td>{{ review.movie.title|truncatechars:20 }}</td>
       <td>
         <a href="{% url 'community:detail_review' review.pk %}" class="text-decoration-none text-white mx-5">{{ review.title }} <span class="text-secondary">[{{ review.comment_set.all|length }}]</span></a>
       </td>
@@ -26,62 +29,11 @@
 </table>
 
 <div class="d-flex justify-content-end">
-  <a href="{% url 'community:create_review' %}"><button class="btn btn-success m-4">글쓰기</button></a>
+  {% comment %} <a href="{% url 'community:create_review' %}"><button class="btn btn-success m-4">글쓰기</button></a> {% endcomment %}
 </div>
 
 <div class="d-flex justify-content-center mt-5">
   {% bootstrap_pagination page_obj %}
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{% comment %} <div class="container">
-  <h1 class="justify-content-end">
-    <a>Reviews</a>
-    <a href="{% url 'community:create' %}"><button class="btn btn-warning">글쓰기</button></a>
-  </h1>
-  
-
-
-  <table class="table text-white">
-    <thead>
-      <tr>
-        <th scope="col">글 번호</th>
-        <th scope="col">제목</th>
-        <th scope="col">작성자</th>
-        <th scope="col">작성 날짜</th>
-      </tr>
-    </thead>
-    <tbody>
-        {% for review in reviews %}
-          <tr>
-            <a href="{% url 'community:detail' review.pk %}">
-              <th scope="row">{{ review.pk }}</th>
-              <th>{{ review.title }}</th>
-              <th>{{ review.user }}</th>
-              <th>{{ review.created_at }}</th>
-            </a>
-            <hr>
-          </tr>
-        {% endfor %}
-    </tbody>
-  </table>
-</div> {% endcomment %}
 
 {% endblock %}
