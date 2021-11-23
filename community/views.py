@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Review, Comment
 from .forms import ReviewForm, CommentForm
 from django.core.paginator import Paginator
+from movies.models import Movie
 
 
 @require_GET
@@ -20,12 +21,14 @@ def index(request):
 
 @login_required
 @require_http_methods(['GET', 'POST'])
-def create_review(request):
+def create_review(request, movie_id):
+    movie = get_object_or_404(Movie, movie_api_id=movie_id)
     if request.method == 'POST':
         form = ReviewForm(request.POST) 
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
+            review.movie = movie
             review.save()
             return redirect('community:detail_review', review.pk)
     else:

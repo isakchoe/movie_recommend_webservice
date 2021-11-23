@@ -15,11 +15,11 @@
       {% if request.user == review.user %}
         <form action="{% url 'community:update_review' review.pk %}" method="GET" class="d-inline">
           {% csrf_token %}
-          <button class="btn btn-warning">수정</button>
+          <button class="btn btn-warning mx-1">수정</button>
         </form>
         <form action="{% url 'community:delete_review' review.pk %}" method="POST" class="d-inline">
           {% csrf_token %}
-          <button class="btn btn-danger", onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
+          <button class="btn btn-danger mx-1", onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
         </form>
       {% endif %}
     </div>
@@ -43,11 +43,11 @@
       <form action="{% url 'community:create_comment' review.pk %}" method="POST" class="d-inline">
         {% csrf_token %}
         {% bootstrap_form comment_form %}
-        <button class="btn btn-primary">작성</button>
+        <button class="btn btn-primary mx-1">작성</button>
       </form>
     {% else %}
-      <a href="{% url 'accounts:login' %}"><button class="btn btn-success">로그인</button></a>
+      <a href="{% url 'accounts:login' %}"><button class="btn btn-success mx-1">로그인</button></a>
     {% endif %}
-    <a href="{% url 'community:index' %}"><button class="btn btn-light">뒤로가기</button></a>
+    <a href="{% url 'community:index' %}"><button class="btn btn-light mx-1">뒤로가기</button></a>
   </div>
 {% endblock  %}

@@ -88,8 +88,9 @@ def recommend_review(request):
                 pick_genres.append(genre.id)
     
     review_movies = []
-
+    
     for movie in movies:
+        
         for genre in movie['genre_ids']:
 
             if genre in pick_genres:
