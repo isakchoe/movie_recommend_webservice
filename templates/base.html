@@ -109,8 +109,8 @@
         <button class="btn btn-outline-light">회원가입</button>
       </form>
       {% endif %}
-      <form class="d-flex mx-2">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <form class="d-flex mx-2" action="{% url 'movies:search_movies' %}">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="data">
           <button class="btn btn-outline-light" type="submit">Search</button>
       </form>
     </div>
