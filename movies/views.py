@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import requests
 import random
 from .models import Movie, Genre
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
+from django.db.models import Max
 
 def all_movies(n):
     movies = []
@@ -31,26 +32,35 @@ def all_movies(n):
 
             for genre_id in movie['genre_ids']:
                 temp.genres.add(genre_id)
-            movies.append(movie)
+        
+            movies.append(temp)
 
     # 디비가 아니라 tmdb api(movie_api_id가 없다 )
     return movies
 
 
-# 최종 배포시 
-# movies = all_movies(6)
+def delete_movies(request):
+    # 삭제 
+    movies = Movie.objects.all()
+    for movie in movies:
+        movie.delete()
+    return redirect('movies:recommend')
+
+
+def insert_movies(request):
+    # db 저장 
+    all_movies(6)
+    return redirect('movies:recommend')
 
 
 def recommend_random(request):
-    # 40개 중에서 랜덤으로 3개 추천
-    movies = all_movies(3)
-    random_movies = random.sample(movies, 3)
+
+    random_movies = Movie.objects.order_by('?')[:3]
 
     context = {
         'recommend_movies': random_movies,
     }
 
-    # tmdb를 쏴주고 잇엇다
     return render(request,'movies/recommend_movies.html', context)
 
 
@@ -155,8 +165,7 @@ def home(request):
 
 # movie detail 
 def detail(request, movie_id):
-    print(movie_id)
-    movie = get_object_or_404(Movie, movie_api_id = movie_id)
+    movie = get_object_or_404(Movie, movie_api_id=movie_id)
     
     context = {
         'movie': movie,
@@ -179,11 +188,10 @@ def search_movies(request):
     return render(request,'movies/recommend_movies.html',context)
 
 
-def movie_reviews(request, movie_api_id):
-    # 디비에서 서칭 
-    movie = Movie.objects.get(movie_api_id = movie_api_id)
+def movie_reviews(request, movie_id):
+    movie = get_object_or_404(Movie, movie_api_id=movie_id)
     
-    # 영화에서 리뷰 역참조 
+    # 영화에서 리뷰 역참조
     reviews_of_movie = movie.review_set.all()
     
     paginator = Paginator(reviews_of_movie, 10)
