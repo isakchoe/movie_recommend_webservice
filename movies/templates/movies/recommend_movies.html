@@ -11,6 +11,7 @@
 </div>
 
 <br>
+{{recommend_movies}}
 {% if recommend_movies %}
   <div class="d-flex flex-row justify-content-center">
     {% for movie in recommend_movies %}
@@ -22,7 +23,7 @@
           <p class="fs-5 text-center">{{ movie.release_date }}</p>
           <p class="card-text">{{ movie.overview|truncatechars:80 }}</p>
         </div>
-      </a>      
+      </a>
     </div>
     <hr>
     {% endfor %}

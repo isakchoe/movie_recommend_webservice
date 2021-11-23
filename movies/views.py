@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import requests
 import random
 from .models import Movie, Genre
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
-
+from django.db.models import Max
 
 def all_movies(n):
     movies = []
@@ -17,6 +17,7 @@ def all_movies(n):
         res = requests.get(URL).json()
 
         for movie in res['results']:
+            # 디비에 저장 
             temp = Movie.objects.create(
                         movie_api_id = movie['id'],
                         title = movie['title'],
@@ -34,18 +35,27 @@ def all_movies(n):
         
             movies.append(temp)
 
+    # 디비가 아니라 tmdb api(movie_api_id가 없다 )
     return movies
 
 
-# 최종 배포시 
-# movies = all_movies(6)
+def delete_movies(request):
+    # 삭제 
+    movies = Movie.objects.all()
+    for movie in movies:
+        movie.delete()
+    return redirect('movies:recommend')
+
+
+def insert_movies(request):
+    # db 저장 
+    all_movies(6)
+    return redirect('movies:recommend')
 
 
 def recommend_random(request):
-    # 40개 중에서 랜덤으로 3개 추천
-    movies = all_movies(3)
 
-    random_movies = random.sample(movies, 3)
+    random_movies = Movie.objects.order_by('?')[:3]
 
     context = {
         'recommend_movies': random_movies,
