@@ -84,12 +84,18 @@ def recommend_review(request):
     
     # 유저가 리뷰한 영화의 장르 
     pick_genres = []
+    pick_movies = {}
 
 
     for review in reviews:
         # 리뷰가 7점이상이면 해당 장르를 추천, 
         if review.rate >= 7:
-            movie = review.movie     
+            movie = review.movie
+
+            # 사용자가 리뷰한 영화 따로 저장
+            if movie.title not in pick_movies:
+                pick_movies[movie.title] = 1
+            
             genres = movie.genres.all()
             
             for genre in genres:
@@ -99,6 +105,9 @@ def recommend_review(request):
     movies = Movie.objects.all()
 
     for movie in movies:
+        # 이미 사용자가 리뷰한 영화라면 스킵 
+        if movie.title in pick_movies:
+            continue
         genres = movie.genres.all()
 
         for genre in genres:
