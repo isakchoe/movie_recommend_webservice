@@ -78,30 +78,30 @@ def recommend_random(request):
 
 @login_required
 def recommend_review(request):
-
-    user = request.user
-    reviews = user.review_set.all()
     
-    # 유저가 리뷰한 영화의 장르 
-    pick_genres = []
-    pick_movies = {}
-
+    user = request.user              # 유저
+    reviews = user.review_set.all()  # 유저가 남긴 리뷰들 
+    pick_genres = []                 # 유저가 리뷰한 영화의 장르 
+    pick_movies = {}                 # 유저가 리뷰한 영화들 
 
     for review in reviews:
-        # 리뷰가 7점이상이면 해당 장르를 추천, 
+        # 리뷰가 7점이상이면, 리뷰한 영화를 가져와서 
         if review.rate >= 7:
             movie = review.movie
-
+            
             # 사용자가 리뷰한 영화 따로 저장
             if movie.title not in pick_movies:
                 pick_movies[movie.title] = 1
             
             genres = movie.genres.all()
             
+            # 리뷰한 영화의 '장르'를 저장 
             for genre in genres:
                 pick_genres.append(genre.id)
     
-    review_movies = set()
+    
+    recommend_movies = set()
+    # 전체 영화 DB
     movies = Movie.objects.all()
 
     for movie in movies:
@@ -123,30 +123,28 @@ def recommend_review(request):
                     count_score = 2
                 else:
                     count_score = 2.5
-                
+
                 result = movie.vote_average + count_score
 
                 if result >=10:
-                    review_movies.add((movie,result))
+                    recommend_movies.add((movie,result))
     # set --> list 
-    review_movies = list(review_movies)
-    new_review_movies = []
+    recommend_movies = list(recommend_movies)
+    new_recommend_movies = []
 
     # 빈배열 아니면, 정렬
-    if review_movies:
-        review_movies.sort(key=lambda x: -x[1])
+    if recommend_movies:
+        recommend_movies.sort(key=lambda x: -x[1])
         # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
-        if len(review_movies) > 3:
-            review_movies = review_movies[:3]
-            for movie, result_score in review_movies:
-                new_review_movies.append(movie)
-    
+        if len(recommend_movies) > 3:
+            recommend_movies = recommend_movies[:3]
+            for movie, result_score in recommend_movies:
+                new_recommend_movies.append(movie)
 
     context ={
-        'recommend_movies': new_review_movies,
+        'recommend_movies': new_recommend_movies,
         'msg':'추천결과',
     }
-
     return render(request, 'movies/recommend_movies.html', context)
 
 
