@@ -95,7 +95,7 @@ def recommend_review(request):
             for genre in genres:
                 pick_genres.append(genre.id)
     
-    review_movies = []
+    review_movies = set()
     movies = Movie.objects.all()
 
     for movie in movies:
@@ -118,8 +118,9 @@ def recommend_review(request):
                 result = movie.vote_average + count_score
 
                 if result >=10:
-                    review_movies.append([movie,result])
-
+                    review_movies.add((movie,result))
+    # set --> list 
+    review_movies = list(review_movies)
     new_review_movies = []
 
     # 빈배열 아니면, 정렬
@@ -128,9 +129,8 @@ def recommend_review(request):
         # 3개 이상이면, 3개만 추리기! Result 높은순으로! 
         if len(review_movies) > 3:
             review_movies = review_movies[:3]
-            for review_movie in review_movies:
-                review_movie.pop()
-                new_review_movies.append(review_movie[0])
+            for movie, result_score in review_movies:
+                new_review_movies.append(movie)
     
 
     context ={
@@ -194,3 +194,4 @@ def movie_reviews(request, movie_id):
         'page_obj': page_obj,
     }
     return render(request, 'community/index.html', context)
+
