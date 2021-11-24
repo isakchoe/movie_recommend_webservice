@@ -2,11 +2,11 @@
 {% load bootstrap5 %}
 
 {% block content %}
-  <h2 class="text-center mt-5">{{ review.movie.title }}</h2>
+  <h2 class="text-center mt-5"><a href="{% url 'movies:detail' review.movie.movie_api_id %}" class="text-decoration-none">{{ review.movie.title }}</a></h2>
   <hr class="mb-5">
   <div class="mx-5">
     <h3 class="mb-4">{{ review.title }}</h3>
-    <p class="fs-5">리뷰 평점 : {{ review.rate }}</p>
+    <p class="fs-5">사용자 평점 : {{ review.rate }}</p>
     <p class="fs-6 mb-4">{{ review.created_at }}</p>
     <p class="border border-secondary p-4" style="height: 400px;">
       {{ review.content|linebreaksbr }}
@@ -29,6 +29,7 @@
     {% if comments|length %}
       <p>{{ comments|length }}개의 댓글이 있습니다.</p>
     {% endif %}
+    <hr>
     {% for comment in comments %}
       <div class="my-3">
         작성자 : {{ comment.user }}
@@ -37,8 +38,8 @@
         <br>
         > {{ comment.content }}
       </div>
+      <hr>
     {% endfor %}
-    <hr>
     {% if request.user.is_authenticated %}
       <form action="{% url 'community:create_comment' review.pk %}" method="POST" class="d-inline">
         {% csrf_token %}
