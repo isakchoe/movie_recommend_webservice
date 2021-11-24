@@ -26,10 +26,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon.png' %}">
   <style>
   
 
@@ -178,14 +179,14 @@
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="data">
           <button class="btn btn-outline-light" type="submit">Search</button>
       </form>
-      <form class="mx-2" action="{% url 'movies:delete_movies' %}" method="POST" >
+      {% comment %} <form class="mx-2" action="{% url 'movies:delete_movies' %}" method="POST" >
         {% csrf_token %}
           <button class="btn btn-outline-primary">영화 DB 삭제</button>
       </form>
       <form class="mx-2" action="{% url 'movies:insert_movies' %}" method="POST" >
         {% csrf_token %}
         <button name="insert" class="btn btn-outline-primary">영화 DB 가져오기</button>
-      </form>
+      </form> {% endcomment %}
     </div>
   </nav>
 

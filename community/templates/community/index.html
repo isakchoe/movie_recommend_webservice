@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
+{% load static %}
 
 {% block content %}
 <button class="btn btn-light mt-5 mb-3" onClick="javascript:history.go(-1);">뒤로가기</button>
@@ -17,9 +18,11 @@
   {% for review in page_obj %}
     <tr class="table-height align-middle text-center">
       <th scope="row" class="text-center">{{ review.pk }}</th>
-      <td>{{ review.movie.title|truncatechars:20 }}</td>
       <td>
-        <a href="{% url 'community:detail_review' review.pk %}" class="text-decoration-none text-white mx-5">{{ review.title }} <span class="text-secondary">[{{ review.comment_set.all|length }}]</span></a>
+        <a href="{% url 'movies:detail' review.movie.movie_api_id %}" class="text-decoration-none text-white">{{ review.movie.title|truncatechars:20 }}</a>
+      </td>
+      <td>
+        <a href="{% url 'community:detail_review' review.pk %}" class="text-decoration-none text-white mx-5"><img src="{% static 'images/review-star.png' %}" width="16px">{{ review.rate }}) {{ review.title }} <span class="text-secondary">[{{ review.comment_set.all|length }}]</span></a>
       </td>
       <td class="text-center">{{ review.user.username }}</td>
       <td class="text-center">{{ review.created_at }}</td>

@@ -8,7 +8,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=10)
+    title = models.CharField(max_length=100)
     content = models.TextField()
     comments = models.TextField()
     rate = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
