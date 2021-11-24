@@ -31,9 +31,9 @@
   </tbody>
 </table>
 
-<div class="d-flex justify-content-end">
-  {% comment %} <a href="{% url 'community:create_review' %}"><button class="btn btn-success m-4">글쓰기</button></a> {% endcomment %}
-</div>
+{% comment %} <div class="d-flex justify-content-end">
+  <a href="{% url 'community:index' %}"><button class="btn btn-dark m-4">모든 영화 리뷰</button></a>
+</div> {% endcomment %}
 
 <div class="d-flex justify-content-center mt-5">
   {% bootstrap_pagination page_obj %}
