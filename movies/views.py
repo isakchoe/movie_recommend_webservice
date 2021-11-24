@@ -142,18 +142,27 @@ def recommend_review(request):
 
 
 def recommend(request):
-    
     return render(request, 'movies/recommend.html')
 
 
+count = 0 
+
 def home(request):
-    random_movies = Movie.objects.order_by('?')[:3]
+    global count
+    if count == 0:
+        movies = all_movies(6)
+        random_movies = random.sample(movies, 3)
+        count += 1
+    
+    else:
+        random_movies = Movie.objects.order_by('?')[:3]
+    
     context = {
         'first_movie': random_movies[0],
         'sec_movie' : random_movies[1],
         'third_movie': random_movies[2],
     }
-
+    
     return render(request, 'movies/home.html', context)
 
 # movie detail 
