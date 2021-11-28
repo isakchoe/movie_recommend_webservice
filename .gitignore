@@ -1,16 +1,9 @@
-<<<<<<< HEAD
 
 venv/
 .idea/
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,django,macos,windows,venv,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django,macos,windows,venv,visualstudiocode
-=======
-venv/
-.idea/
-# Created by https://www.toptal.com/developers/gitignore/api/venv,windows,macos,django,visualstudiocode,python
-# Edit at https://www.toptal.com/developers/gitignore?templates=venv,windows,macos,django,visualstudiocode,python
->>>>>>> cdbe5203cb81d8419c67a22871f29be23a1713a9
 
 ### Django ###
 *.log
@@ -21,6 +14,7 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media
+secrets.json
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
